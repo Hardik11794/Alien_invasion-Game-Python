@@ -9,6 +9,7 @@ from Modules import Ship
 
 
 
+
 def run_game():
 
     # initialized game and create a screen object
@@ -28,7 +29,9 @@ def run_game():
 
         gf.check_events(ai_settings,screen,ship,bullets)
         ship.update()
-        bullets.update()
+        gf.update_bullets(bullets)
+      
+
         gf.update_screen(ai_settings,screen,ship,bullets)
 
        
