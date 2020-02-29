@@ -29,7 +29,7 @@ class Alien(Sprite):
 
     def update(self):
         """Move alien the right"""
-        self.x += (self.ai_settings.alien_speed_factor * self.ai_settings.alien_speed_direction)
+        self.x += (self.ai_settings.alien_speed_factor * self.ai_settings.fleet_direction)
         self.rect.x = self.x
 
     def check_edges(self):
