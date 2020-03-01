@@ -2,8 +2,7 @@ import sys
 import pygame
 from Modules import bullet
 from Modules import Alien
-
-
+from time import sleep 
 
 
 
@@ -100,7 +99,7 @@ def check_bullet_alien_collisions(ai_settings,screen,ship,aliens,bullets):
        create_fleet(ai_settings, screen, ship, aliens)
 
  
-def update_aliens(ai_settings, aliens):
+def update_aliens(ai_settings,stats,screen,ship, aliens,bullets):
      
     """Check is the fleet is on the edge,
     and then update the position of all alens in the fleet."""
@@ -108,6 +107,15 @@ def update_aliens(ai_settings, aliens):
     check_fleet_edges(ai_settings,aliens)
 
     aliens.update()
+
+    #Look for ship alien collision
+    if pygame.sprite.spritecollideany(ship,aliens):
+        print("Ship hit!!!")
+        ship_hit(ai_settings,stats,screen,ship,aliens,bullets)
+
+    #Look for the alien reaching the bottom of the screen
+    check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets)
+
 
 def create_fleet(ai_settings,screen,ship,aliens):
 
@@ -166,4 +174,36 @@ def change_fleet_direction(ai_settings, aliens):
     ai_settings.fleet_direction *=-1
 
 
+def ship_hit(ai_settings, stats, screen, ship,aliens, bullets):
+    """Respond to ship being hit by bullets"""
     
+    if stats.ships_left > 0:
+        
+        #Decrement ship left
+        stats.ships_left -= 1
+
+        #Empty the list of aliens and bullets
+        aliens.empty()
+        bullets.empty()
+
+        #Create new fleet and center the ship
+        create_fleet(ai_settings, screen, ship, aliens)
+        ship.center_ship()
+
+        #Pause
+        sleep(0.5)
+
+    else:
+        stats.game_active = False
+
+
+def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
+    """check if any alien have reached bottom of the screen"""
+    screen_rect = screen.get_rect()
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= screen_rect.bottom:
+            #Treat this game as if ship got the hit !!
+            ship_hit(ai_settings, stats, screen, ship,aliens, bullets)
+            break
+
+
