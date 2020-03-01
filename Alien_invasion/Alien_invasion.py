@@ -7,6 +7,8 @@ from Modules import Alien
 from Modules import game_functions as gf
 from Modules import Ship
 from Modules import game_stats
+from Modules import button
+
 
 
 
@@ -20,6 +22,8 @@ def run_game():
     screen = pygame.display.set_mode((ai_settings.screen_width,ai_settings.screen_height))
     pygame.display.set_caption('Alian Invasion')
 
+    #Make the play button
+    play_button =  button.Button(ai_settings, screen, "Play")
     #Create instance to store game statistics
     stats = game_stats.GameStats(ai_settings)
     #Make an alien
@@ -45,7 +49,7 @@ def run_game():
             gf.update_aliens(ai_settings,stats,screen,ship,aliens,bullets)
       
 
-        gf.update_screen(ai_settings,screen,ship,aliens,bullets)
+        gf.update_screen(ai_settings,screen,stats,ship,aliens,bullets,play_button)
 
        
 
