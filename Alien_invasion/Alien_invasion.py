@@ -9,7 +9,7 @@ from Modules import Ship
 from Modules import game_stats
 from Modules import scoreboard
 from Modules import button
-
+from playsound import playsound
 
 
 
@@ -39,11 +39,19 @@ def run_game():
     #Create fleet of aliens
     gf.create_fleet(ai_settings,screen,ship,aliens)
     
+    gameExit = False
+
+    pygame.mixer.music.load('Sound/theme_01.mp3')
+    pygame.mixer.music.play(-1)
+    #gf.play_background()
 
     #Start the main loop for the game.
-    while True:
+    while not gameExit:
 
-        gf.check_events(ai_settings,screen,stats,sb,play_button,ship,aliens,bullets)
+
+        
+        gameExit = gf.check_events(ai_settings,screen,stats,sb,play_button,ship,aliens,bullets)
+       
 
         if stats.game_active:
             ship.update()
